@@ -1,0 +1,4 @@
+# Environment Vars and Folders
+venv
+.env
+.env.*
