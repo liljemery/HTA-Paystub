@@ -1,7 +1,10 @@
 from fastapi import FastAPI
-from routes.router import main_router
+from api.routes import router
+import uvicorn
 
-app = FastAPI()
+app = FastAPI(title="Paystub Notifier API", version="1.0")
 
+app.include_router(router)
 
-app.include_router(main_router)
+# if __name__ == "__main__":
+#     uvicorn.run(app, host="0.0.0.0", port=3000)

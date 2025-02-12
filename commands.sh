@@ -4,9 +4,9 @@
 # 2. ./commands.sh
 
 # 3. Run this command to create Environment Folder
-    python3 -m venv env
+    python3 -m venv venv
     # If windows
-    python -m venv env
+    python -m venv venv
 
 # 4. Run this command to activate Environment Folder
     source venv/bin/activate
