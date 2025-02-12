@@ -1,2 +1,4 @@
 # Environment Vars and Folders
 venv
+__pycache__
+.pytest_cache
