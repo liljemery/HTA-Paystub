@@ -1,29 +1,34 @@
-import sys
-import os
 import pytest
 from fastapi.testclient import TestClient
-
-# Ensure the root directory is in the Python path
-sys.path.insert(0, os.path.abspath(os.path.dirname(os.path.dirname(__file__))))
-
-from main import app  # Import after modifying sys.path
+from main import app
+from dotenv import load_dotenv
+import os
 
 @pytest.fixture
 def client():
-    """Creates a test client for FastAPI."""
+    """Fixture to provide a FastAPI test client."""
     return TestClient(app)
 
 @pytest.fixture
 def test_csv(tmp_path):
-    """Creates a sample payroll CSV file for testing."""
-    csv_content = """full_name,email,position,health_discount_amount,social_discount_amount,
-taxes_discount_amount,other_discount_amount,gross_salary,gross_payment,
-net_payment,period
-John Doe,johndoe@example.com,Developer,500,300,200,100,5000,4800,4500,2024-01-01
-Jane Smith,janesmith@example.com,Designer,400,250,150,50,4000,3800,3500,2024-01-01"""
-    
-    file_path = tmp_path / "test_payroll.csv"
-    with open(file_path, "w") as f:
-        f.write(csv_content)
-    
-    return str(file_path)  # Return file path as string
+    """Fixture to create a sample CSV file for testing."""
+    csv_content = """full_name,email,position,health_discount_amount,social_discount_amount,taxes_discount_amount,other_discount_amount,gross_salary,gross_payment,net_payment,period
+John Doe,johndoe@example.com,Engineer,100,50,200,25,5000,5200,4800,2025-01-01
+Jane Smith,janesmith@example.com,Manager,120,60,250,30,6000,6300,5700,2025-01-01
+"""
+    csv_file = tmp_path / "sample.csv"
+    csv_file.write_text(csv_content)
+    return str(csv_file)
+
+@pytest.fixture
+def mock_env(monkeypatch):
+    """Fixture to mock environment variables"""
+    monkeypatch.setenv("API_USER", "admin")
+    monkeypatch.setenv("API_PASSWORD", "password")
+    monkeypatch.setenv("EMAIL_HOST", "smtp.example.com")
+    monkeypatch.setenv("EMAIL_PORT", "587")
+    monkeypatch.setenv("EMAIL_USER", "jeremytesting60@gmail.com")
+    monkeypatch.setenv("EMAIL_PASS", "scly etsu kdsx avpp")
+
+    # Ensure dotenv loads with override
+    load_dotenv(override=True)

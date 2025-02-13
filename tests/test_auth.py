@@ -1,4 +1,3 @@
-from fastapi.testclient import TestClient
 from api.security import authenticate_user
 from fastapi.security import HTTPBasicCredentials
 import pytest

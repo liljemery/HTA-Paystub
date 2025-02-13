@@ -29,3 +29,9 @@
 
     # - Run this command to stop the project
         # Hotkeys: ctrl + c
+
+curl -X POST "http://localhost:8000/process" \
+    -F "file=@tests/sample_payroll.csv" \
+    -F "country=do" \
+    -F "company_name=atdev" \
+    -u admin:password

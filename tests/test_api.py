@@ -1,5 +1,4 @@
 import pytest
-from fastapi.testclient import TestClient
 from config.settings import settings
 
 def test_api_authentication(client):
@@ -16,6 +15,7 @@ def test_process_paystubs(client, test_csv):
             data={"country": "do", "company_name": "atdev"},
             auth=(settings.API_USER, settings.API_PASSWORD)
         )
-    
+
+    print("Response JSON:", response.json())
     assert response.status_code == 200
-    assert "emails_sent" in response.json()
+

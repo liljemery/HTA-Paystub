@@ -1,3 +1,4 @@
+import pytest
 from services.pdf_generator import generate_pdf
 
 def test_pdf_generation(test_csv):

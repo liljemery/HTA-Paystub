@@ -17,16 +17,23 @@ async def process_paystubs(
 ):
     """Processes payroll data from CSV, generates PDFs, and sends emails."""
     try:
+        # ✅ Save file temporarily
         temp_dir = tempfile.mkdtemp()
         file_path = os.path.join(temp_dir, file.filename)
         with open(file_path, "wb") as buffer:
             buffer.write(file.file.read())
 
+        # ✅ Process CSV
         employees = process_csv(file_path)
-        pdf_paths = generate_pdf(employees, country, company_name)
 
+        # ✅ Generate PDFs **before** doing anything else
+        pdf_paths = generate_pdf(employees, country, company_name)
+        print("✅ All PDFs successfully generated.")
+
+        # ✅ Send emails only after PDF generation
         email_log = send_email(employees, pdf_paths)
 
         return {"status": "success", "emails_sent": email_log}
+    
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
