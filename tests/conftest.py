@@ -27,8 +27,9 @@ def mock_env(monkeypatch):
     monkeypatch.setenv("API_PASSWORD", "password")
     monkeypatch.setenv("EMAIL_HOST", "smtp.example.com")
     monkeypatch.setenv("EMAIL_PORT", "465")
-    monkeypatch.setenv("EMAIL_USER", "jeremytesting60@gmail.com")
-    monkeypatch.setenv("EMAIL_PASS", "scly etsu kdsx avpp")
+    monkeypatch.setenv("EMAIL_USER", "testermailer@mail.com")
+    monkeypatch.setenv("EMAIL_PASS", "app password for now")
+    monkeypatch.setenv("COMPANY_NAME", "atdev")
 
     # Ensure dotenv loads with override
     load_dotenv(override=True)

@@ -9,7 +9,6 @@ def generate_pdf(employees, country, company_name):
 
     pdf_paths = []
     
-    # Define translations based on country
     translations = {
         "do": {
             "paystub": "Comprobante de Pago",
@@ -35,7 +34,6 @@ def generate_pdf(employees, country, company_name):
 
     lang = translations.get(country, translations["do"])
 
-    # Define logo path
     logo_dir = "company_logos"
     logo_path = os.path.join(logo_dir, f"{company_name}.png")
     default_logo = os.path.join(logo_dir, "default.jpeg")
@@ -44,7 +42,6 @@ def generate_pdf(employees, country, company_name):
         pdf_path = os.path.join(pdf_dir, f"{employee['full_name'].replace(' ', '_')}.pdf")
         c = canvas.Canvas(pdf_path, pagesize=letter)
         
-        # Draw Company Logo
         if os.path.exists(logo_path):
             logo = ImageReader(logo_path)
         else:

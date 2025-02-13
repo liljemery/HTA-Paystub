@@ -10,5 +10,6 @@ class Settings:
     EMAIL_PORT = int(os.getenv("EMAIL_PORT", 465))
     EMAIL_USER = os.getenv("EMAIL_USER", "no-reply@example.com")
     EMAIL_PASS = os.getenv("EMAIL_PASS", "emailpassword")
+    COMPANY_NAME = os.getenv("COMPANY_NAME", "atdev")
 
 settings = Settings()

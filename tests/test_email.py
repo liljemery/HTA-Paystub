@@ -13,7 +13,19 @@ def test_pdf(tmp_path):
 @patch("smtplib.SMTP_SSL")
 def test_email_sending(mock_smtp, test_pdf):
     """Tests if emails are sent correctly."""
-    employees = [{"full_name": "John Doe", "email": "johndoe@example.com"}]
+    employees = [{
+        "full_name": "John Doe",
+        "email": "johndoe@example.com",
+        "position": "Developer",
+        "period": "2024-01-01",
+        "gross_salary": 5000,
+        "health_discount_amount": 500,
+        "social_discount_amount": 300,
+        "taxes_discount_amount": 200,
+        "other_discount_amount": 100,
+        "net_payment": 4500
+    }]
+    
     pdf_paths = [test_pdf]
 
     result = send_email(employees, pdf_paths)
