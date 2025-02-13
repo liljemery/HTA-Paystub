@@ -26,7 +26,7 @@ def mock_env(monkeypatch):
     monkeypatch.setenv("API_USER", "admin")
     monkeypatch.setenv("API_PASSWORD", "password")
     monkeypatch.setenv("EMAIL_HOST", "smtp.example.com")
-    monkeypatch.setenv("EMAIL_PORT", "587")
+    monkeypatch.setenv("EMAIL_PORT", "465")
     monkeypatch.setenv("EMAIL_USER", "jeremytesting60@gmail.com")
     monkeypatch.setenv("EMAIL_PASS", "scly etsu kdsx avpp")
 
