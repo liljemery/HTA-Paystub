@@ -2,6 +2,7 @@ import os
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from reportlab.lib.utils import ImageReader
+from utils.translation import translations
 
 def generate_pdf(employees, country, company_name):
     pdf_dir = "paystubs"
@@ -9,29 +10,6 @@ def generate_pdf(employees, country, company_name):
 
     pdf_paths = []
     
-    translations = {
-        "do": {
-            "paystub": "Comprobante de Pago",
-            "gross_salary": "Salario Bruto",
-            "gross_payment": "Pago Bruto",
-            "net_payment": "Pago Neto",
-            "health": "SFS",
-            "social": "AFP",
-            "taxes": "ISR",
-            "others": "Otros",
-        },
-        "usa": {
-            "paystub": "Paystub Payment",
-            "gross_salary": "Gross Salary",
-            "gross_payment": "Gross Payment",
-            "net_payment": "Net Payment",
-            "health": "Health Insurance",
-            "social": "Social Security",
-            "taxes": "Taxes",
-            "others": "Others",
-        },
-    }
-
     lang = translations.get(country, translations["do"])
 
     logo_dir = "company_logos"
@@ -47,32 +25,43 @@ def generate_pdf(employees, country, company_name):
         else:
             logo = ImageReader(default_logo)
 
-        c.drawImage(logo, 400, 700, width=150, height=50, preserveAspectRatio=True, mask='auto')
-
-        # Title
+        # Header with Logo
+        c.drawImage(logo, 50, 730, width=150, height=50, preserveAspectRatio=True, mask='auto')
         c.setFont("Helvetica-Bold", 16)
-        c.drawString(100, 750, f"{lang['paystub']} - {company_name}")
-
-        # Employee Details
+        c.drawString(250, 750, f"{lang['paystub']} ({employee['period']})")
         c.setFont("Helvetica", 12)
-        c.drawString(100, 720, f"Employee: {employee['full_name']}")
-        c.drawString(100, 700, f"Position: {employee['position']}")
-        c.drawString(100, 680, f"Period: {employee['period']}")
-
+        c.drawString(250, 735, employee['full_name'])
+        c.drawString(250, 720, employee.get('position', ''))
+        
         # Payroll Details
         c.setFont("Helvetica-Bold", 12)
-        c.drawString(100, 650, f"{lang['gross_salary']}: {employee['gross_salary']}")
-        c.drawString(100, 630, f"{lang['gross_payment']}: {employee['gross_payment']}")
-        c.drawString(100, 610, f"{lang['net_payment']}: {employee['net_payment']}")
-
-        # Deductions
+        c.drawString(50, 690, f"{lang['gross_salary']}: {employee['gross_salary']}")
+        c.drawString(50, 670, f"{lang['gross_payment']}: {employee['gross_payment']}")
+        
+        # Net Payment
+        c.setFont("Helvetica-Bold", 14)
+        c.drawString(50, 640, f"{lang['net_payment']}: {employee['net_payment']}")
+        
+        # Deductions Table
+        c.setFont("Helvetica-Bold", 12)
+        c.drawString(300, 690, "Descuentos")
         c.setFont("Helvetica", 12)
-        c.drawString(100, 580, f"{lang['health']}: {employee['health_discount_amount']}")
-        c.drawString(100, 560, f"{lang['social']}: {employee['social_discount_amount']}")
-        c.drawString(100, 540, f"{lang['taxes']}: {employee['taxes_discount_amount']}")
-        c.drawString(100, 520, f"{lang['others']}: {employee['other_discount_amount']}")
-
+        c.drawString(300, 670, f"{lang['social']}: {employee['social_discount_amount']}")
+        c.drawString(300, 650, f"{lang['health']}: {employee['health_discount_amount']}")
+        c.drawString(300, 630, f"{lang['taxes']}: {employee['taxes_discount_amount']}")
+        c.drawString(300, 610, f"{lang['others']}: {employee['other_discount_amount']}")
+        
+        # Total Deductions Calculation
+        total_deductions = sum([
+            employee['social_discount_amount'], 
+            employee['health_discount_amount'], 
+            employee['taxes_discount_amount'], 
+            employee['other_discount_amount']
+        ])
+        c.setFont("Helvetica-Bold", 12)
+        c.drawString(300, 590, f"Total: {total_deductions}")
+        
         c.save()
         pdf_paths.append(pdf_path)
-
+    
     return pdf_paths
